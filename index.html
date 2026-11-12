@@ -443,12 +443,12 @@ function groupFromHash() {
   return m ? Number(m[1]) : null;
 }
 if (location.hash === "#reset") {
-  try { Object.keys(localStorage).filter(k => k.startsWith("ias-")).forEach(k => localStorage.removeItem(k)); } catch (e) {}
+  try { Object.keys(localStorage).filter(k => k.startsWith("ias2-")).forEach(k => localStorage.removeItem(k)); } catch (e) {}
   location.hash = "";
 }
-let group = groupFromHash() || Number(store.get("ias-grupo")) || pickRandomGroup();
+let group = groupFromHash() || Number(store.get("ias2-grupo")) || pickRandomGroup();
 if (!GROUPS[group]) group = pickRandomGroup();
-store.set("ias-grupo", String(group));
+store.set("ias2-grupo", String(group));
 
 function renderGroup() {
   const g = GROUPS[group], a = ACTS[g.act];
@@ -481,7 +481,7 @@ function renderPrep() {
   $("sendTitle").textContent = fill(snd.title);
   $("sendWhy").textContent = fill(snd.why);
   $("sendToNum").textContent = g.to;
-  const toKey = "ias-to-" + group;
+  const toKey = "ias2-to-" + group;
   $("sendTo").value = store.get(toKey) || "";
   const list = $("mailList");
   const draw = () => {
@@ -520,17 +520,17 @@ const pick = $("pick");
 Object.keys(GROUPS).forEach(n => {
   const o = document.createElement("option"); o.value = n; o.textContent = "Grupo " + n + " · " + ACTS[GROUPS[n].act].name; pick.appendChild(o);
 });
-pick.addEventListener("change", () => { group = Number(pick.value); store.set("ias-grupo", String(group)); renderGroup(); window.scrollTo({ top: 0 }); });
-window.addEventListener("hashchange", () => { const h = groupFromHash(); if (h) { group = h; store.set("ias-grupo", String(group)); renderGroup(); } });
+pick.addEventListener("change", () => { group = Number(pick.value); store.set("ias2-grupo", String(group)); renderGroup(); window.scrollTo({ top: 0 }); });
+window.addEventListener("hashchange", () => { const h = groupFromHash(); if (h) { group = h; store.set("ias2-grupo", String(group)); renderGroup(); } });
 
 // Tabs
 const tabs = [...document.querySelectorAll(".tab")];
 function showTab(name) {
   tabs.forEach(t => { const on = t.dataset.tab === name; t.setAttribute("aria-selected", on ? "true" : "false"); $("p-" + t.dataset.tab).hidden = !on; });
-  store.set("ias-tab", name);
+  store.set("ias2-tab", name);
 }
 tabs.forEach(t => t.addEventListener("click", () => showTab(t.dataset.tab)));
-showTab(["preparar", "agente", "revisor", "hoja", "llevar"].includes(store.get("ias-tab")) ? store.get("ias-tab") : "preparar");
+showTab(["preparar", "agente", "revisor", "hoja", "llevar"].includes(store.get("ias2-tab")) ? store.get("ias2-tab") : "preparar");
 
 // Copy
 function selectText(el) { const r = document.createRange(); r.selectNodeContents(el); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
@@ -546,7 +546,7 @@ document.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click"
 // Hoja
 const fields = ["f1", "f2", "f3", "f4", "f5", "f6", "f7"];
 const labels = ["Problema", "Entrada", "Herramientas", "Humano al medio", "Modelo", "Costo mensual", "Métrica"];
-const sheetKey = () => "ias-hoja-" + group;
+const sheetKey = () => "ias2-hoja-" + group;
 function loadSheet() {
   let data = {}; try { data = JSON.parse(store.get(sheetKey()) || "{}"); } catch (e) {}
   fields.forEach(f => { $(f).value = data[f] || ""; });
