@@ -52,14 +52,16 @@ p { margin: 0; }
 .fact span { display: block; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #93AAAD; }
 .fact strong { display: block; font-size: 14px; color: #FFFFFF; overflow-wrap: anywhere; }
 
-nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 8px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 8px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
-.tab { font: 600 13px var(--body); padding: 10px 4px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
+.tab { font: 600 12px var(--body); padding: 10px 2px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
 .tab[aria-selected="true"] { background: var(--teal); border-color: var(--teal); color: var(--on-accent); }
 .tab:focus-visible, button:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--coral); outline-offset: 2px; }
 
 section.panel { display: grid; gap: 14px; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 10px; min-width: 0; }
+.card, section.panel, .wrap { grid-template-columns: minmax(0, 1fr); }
+.card > * { min-width: 0; }
 .card.soft { background: var(--soft); border-color: transparent; }
 .card.alert { border-color: var(--coral); }
 .card.alert h3 { color: var(--coral); }
@@ -100,6 +102,12 @@ textarea { font: 15px/1.4 var(--body); color: var(--fg); background: var(--surfa
 .rule span { width: 28px; height: 28px; border-radius: 50%; background: var(--coral); color: #FFFFFF; display: grid; place-items: center; font-family: var(--display); font-weight: 700; }
 a { color: var(--teal); font-weight: 600; }
 .foot { display: grid; gap: 8px; font-size: 13px; color: var(--muted); }
+input.in { font: 15px var(--body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px; width: 100%; box-sizing: border-box; }
+.mail { border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 6px; min-width: 0; }
+.mail b { color: var(--ink); overflow-wrap: anywhere; }
+.mail p { font-size: 13px; color: var(--muted); }
+a.btn { display: inline-block; text-decoration: none; font: 600 14px var(--body); border-radius: 10px; padding: 10px 14px; background: var(--coral); color: #FFFFFF; }
+code.inl { font: 13px var(--mono); background: var(--soft); padding: 1px 6px; border-radius: 6px; overflow-wrap: anywhere; }
 select { font: 14px var(--body); padding: 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); }
 @media (max-width: 380px) { .timeline { grid-template-columns: 1fr 1fr; } .num { font-size: 52px; } }
 @media (prefers-reduced-motion: no-preference) { .group { animation: rise .5s ease-out both; } @keyframes rise { from { transform: translateY(8px); } to { transform: none; } } }
@@ -119,17 +127,61 @@ select { font: 14px var(--body); padding: 8px; border-radius: 8px; border: 1px s
     </div>
     <div class="facts">
       <div class="fact"><span>Tu notebook</span><strong id="gNotebook">Notebook 1</strong></div>
-      <div class="fact"><span>Cuenta compartida</span><strong id="gAccount">ia.sinh.mail1@gmail.com</strong></div>
+      <div class="fact"><span>Cuenta de respaldo</span><strong id="gAccount">ia.sinh.mail1@gmail.com</strong></div>
     </div>
-    <p style="font-size:13px;color:#93AAAD">La sesión ya está abierta en la notebook. Tres grupos comparten esta cuenta: trabajen solo con lo que lleva su número.</p>
+    <p style="font-size:13px;color:#93AAAD">Primero creen su propia cuenta en la pestaña Preparar. Si no pueden, usen la de respaldo: la contraseña está en la tarjeta.</p>
   </div>
 
   <nav class="tabs" role="tablist" aria-label="Secciones">
-    <button class="tab" role="tab" id="t-agente" data-tab="agente">Tu agente</button>
+    <button class="tab" role="tab" id="t-preparar" data-tab="preparar">Preparar</button>
+    <button class="tab" role="tab" id="t-agente" data-tab="agente">Agente</button>
     <button class="tab" role="tab" id="t-revisor" data-tab="revisor">Revisor</button>
     <button class="tab" role="tab" id="t-hoja" data-tab="hoja">Hoja</button>
     <button class="tab" role="tab" id="t-llevar" data-tab="llevar">Llevate</button>
   </nav>
+
+  <!-- PREPARAR -->
+  <section class="panel" id="p-preparar" role="tabpanel" aria-labelledby="t-preparar" hidden>
+    <div class="card soft">
+      <span class="eyebrow">En el break · 10 minutos</span>
+      <h2>Preparen la cuenta del grupo</h2>
+      <p>Una persona hace los pasos 1 a 4 en la notebook. Mientras, el resto se adelanta con el paso 5 desde el celular.</p>
+    </div>
+    <div class="card">
+      <ol class="steps">
+        <li><span><b>Cuenta de Google nueva para el grupo</b>, no la personal: <a href="https://accounts.google.com/signup" target="_blank" rel="noopener">accounts.google.com/signup</a>. Nombre sugerido: <code class="inl" id="sugName">iasinhumo.g1.apellido</code></span></li>
+        <li><span><b>Claude:</b> entren a claude.ai con «Continuar con Google» usando esa cuenta.</span></li>
+        <li><span><b>Conectores:</b> en claude.ai, Configuración, Conectores, activen <b id="prepConn">Gmail y Google Calendar</b>.</span></li>
+        <li><span><b>Pizarrón:</b> escriban el mail nuevo al lado del número <b id="prepNum">1</b>. Así el grupo <b id="prepFrom">5</b> les puede escribir.</span></li>
+      </ol>
+    </div>
+    <div class="card alert">
+      <h3>¿Google pide teléfono o se traba?</h3>
+      <p>No pierdan tiempo: usen la cuenta de respaldo <b id="prepBackup">ia.sinh.mail1@gmail.com</b> (contraseña en la tarjeta) y escriban esa en el pizarrón. En la de respaldo los datos del paso 6 ya están cargados.</p>
+    </div>
+    <div class="card">
+      <span class="eyebrow">Paso 5 · Ahora ustedes son pacientes</span>
+      <h3 id="sendTitle">Mándenle mails al grupo 3</h3>
+      <p id="sendWhy"></p>
+      <div class="field"><label for="sendTo">Mail del grupo <span id="sendToNum">3</span>, copiado del pizarrón</label>
+        <input class="in" id="sendTo" type="email" inputmode="email" autocomplete="off" placeholder="mail del otro grupo"></div>
+      <div id="mailList" style="display:grid;gap:12px"></div>
+      <p style="font-size:12px;color:var(--muted)">Pueden mandarlos desde cualquier Gmail: el de la notebook o el del celular.</p>
+    </div>
+    <div class="card">
+      <span class="eyebrow">Paso 6 · Preparen su lado</span>
+      <h3 id="setupTitle">Que el agente cargue la agenda</h3>
+      <p id="setupText"></p>
+      <div id="setupPromptBox">
+        <div class="prompt" id="setupPrompt"></div>
+        <div class="row" style="margin-top:8px"><button class="btn ghost" type="button" data-copy="setupPrompt">Copiar</button><span class="ok" data-ok="setupPrompt" hidden>Copiado</span></div>
+      </div>
+      <div id="setupTsvBox" hidden>
+        <div class="code"><pre id="setupTsv"></pre></div>
+        <div class="row" style="margin-top:8px"><button class="btn ghost" type="button" data-copy="setupTsv">Copiar tabla</button><span class="ok" data-ok="setupTsv" hidden>Copiado</span></div>
+      </div>
+    </div>
+  </section>
 
   <!-- AGENTE -->
   <section class="panel" id="p-agente" role="tabpanel" aria-labelledby="t-agente">
@@ -268,18 +320,21 @@ def buscar_paciente(dni):
 
 <script>
 const GROUPS = {
-  1: { act: "turnos", notebook: "Notebook 1", account: "ia.sinh.mail1@gmail.com" },
-  2: { act: "turnos", notebook: "Notebook 2", account: "ia.sinh.mail2@gmail.com" },
-  3: { act: "quejas", notebook: "Notebook 3", account: "ia.sinh.mail1@gmail.com" },
-  4: { act: "quejas", notebook: "Notebook 4", account: "ia.sinh.mail2@gmail.com" },
-  5: { act: "stock",  notebook: "Notebook 5", account: "ia.sinh.mail1@gmail.com" },
-  6: { act: "stock",  notebook: "Notebook 6", account: "ia.sinh.mail2@gmail.com" },
+  1: { act: "turnos", notebook: "Notebook 1", account: "ia.sinh.mail1@gmail.com", to: 3, from: 5 },
+  2: { act: "turnos", notebook: "Notebook 2", account: "ia.sinh.mail2@gmail.com", to: 4, from: 6 },
+  3: { act: "quejas", notebook: "Notebook 3", account: "ia.sinh.mail1@gmail.com", to: 5, from: 1 },
+  4: { act: "quejas", notebook: "Notebook 4", account: "ia.sinh.mail2@gmail.com", to: 6, from: 2 },
+  5: { act: "stock",  notebook: "Notebook 5", account: "ia.sinh.mail1@gmail.com", to: 1, from: 3 },
+  6: { act: "stock",  notebook: "Notebook 6", account: "ia.sinh.mail2@gmail.com", to: 2, from: 4 },
 };
 const ACTS = {
   turnos: {
-    name: "Turnos", conn: "Gmail + Google Calendar",
-    prompt: "Leé solo los mails de pacientes que piden turno y tienen [G{G}] en el asunto. Para cada uno, buscá un hueco libre en el calendario \"Agenda G{G}\", con el médico que corresponde, creá el evento y prepará la invitación para el paciente. No toques otros calendarios ni otros mails. Antes de crear o enviar algo, mostrame qué vas a hacer y esperá mi aprobación.",
-    loaded: ["3 mails con [G{G}] en el asunto, de pacientes pidiendo turno", "El calendario \"Agenda G{G}\" con la semana próxima de 3 médicos", "Todo es ficticio: no hay pacientes reales"],
+    name: "Turnos", conn: "Gmail + Google Calendar", connList: "Gmail y Google Calendar",
+    prompt: "Leé los mails de pedido de turno que tienen [G{G}] en el asunto. Para cada uno, buscá un hueco libre en mi Google Calendar con el médico que corresponde (si existe el calendario \"Agenda G{G}\", usá solo ese), creá el evento y prepará la invitación para el paciente. No toques otros mails. Antes de crear o enviar algo, mostrame qué vas a hacer y esperá mi aprobación.",
+    loaded: ["3 pedidos de turno que les manda el grupo {F}, con [G{G}] en el asunto", "La agenda de 3 médicos, cargada en el paso 6 (en la cuenta de respaldo: el calendario \"Agenda G{G}\")", "Todo es ficticio: no hay pacientes reales"],
+    setupTitle: "Que el agente cargue la agenda",
+    setupText: "Peguen esto en Claude. Es su primera tarea de agente: escribe en el calendario por ustedes.",
+    setupPrompt: "Cargá en mi Google Calendar, para la semana que viene, estos horarios ocupados como eventos con el nombre del médico en el título. Dr. Pereyra (clínica médica): de lunes a viernes de 8 a 9 y de 10 a 12. Dra. Quiroga (clínica médica): el jueves de 10 a 11, turno de la paciente Marta Funes, y el viernes todo el día. Dr. Ortiz (traumatología): de lunes a miércoles de 16 a 18. Mostrame la lista antes de crearlos.",
     planB: `MAIL 1 · Pedido de turno con clínica médica
 Laura Giménez. Turno con el Dr. Pereyra, control anual. Cualquier mañana de la semana que viene, antes de las 11.
 
@@ -295,9 +350,12 @@ Dra. Quiroga, clínica médica: ocupada jue 10-11 (Marta Funes) y vie todo el d�
 Dr. Ortiz, traumatología: ocupado lun a mié 16-18; libre jue y vie 16-18`,
   },
   quejas: {
-    name: "Quejas a tickets", conn: "Gmail + Notion (o Google Docs)",
-    prompt: "Leé las 3 quejas de pacientes en la bandeja de entrada, sin archivar ni borrar ningún mail. Por cada una, creá un ticket en la base de Notion \"Tickets G{G}\" (o en el Google Doc \"Tickets G{G}\") con título, paciente, área, prioridad, estado, un resumen y una respuesta sugerida. Antes de crear los tickets, mostrame cómo los clasificaste y esperá mi aprobación.",
-    loaded: ["3 mails de quejas de pacientes en la bandeja de entrada, compartidos con el otro grupo", "La base \"Tickets G{G}\" vacía en Notion y un Google Doc \"Tickets G{G}\" como alternativa", "Áreas posibles: Guardia, Sistemas, Facturación, Atención al paciente"],
+    name: "Quejas a tickets", conn: "Gmail + Google Drive", connList: "Gmail y Google Drive",
+    prompt: "Leé las quejas de pacientes que tienen [G{G}] en el asunto, sin archivar ni borrar ningún mail. Por cada una, escribí un ticket en el Google Doc \"Tickets G{G}\" con título, paciente, área, prioridad, estado, un resumen y una respuesta sugerida. Antes de escribir los tickets, mostrame cómo los clasificaste y esperá mi aprobación.",
+    loaded: ["3 quejas que les manda el grupo {F}, con [G{G}] en el asunto", "El Google Doc \"Tickets G{G}\" vacío, creado en el paso 6", "Áreas posibles: Guardia, Sistemas, Facturación, Atención al paciente"],
+    setupTitle: "Creen el documento de tickets",
+    setupText: "En Google Docs, creen un documento vacío llamado como dice abajo. Si prefieren, pídanselo a Claude.",
+    setupPrompt: "Creá en mi Google Drive un documento vacío llamado \"Tickets G{G}\".",
     planB: `QUEJA 1 · Espera eterna en guardia
 Carolina Díaz. Estuvo 4 horas en la guardia con su hijo con fiebre y nadie le informó nada.
 
@@ -311,9 +369,12 @@ COLUMNAS DEL TICKET
 Título · Paciente · Área (Guardia, Sistemas, Facturación, Atención al paciente) · Prioridad (Alta, Media, Baja) · Estado (Nuevo, En curso, Resuelto) · Resumen · Respuesta sugerida`,
   },
   stock: {
-    name: "Stock de farmacia", conn: "Google Drive + Sheets",
-    prompt: "Abrí la planilla \"Stock farmacia G{G}\" en Drive, y solo esa. Marcá todos los medicamentos que están por debajo del stock mínimo y armá una planilla de pedido separada por proveedor, con la cantidad a pedir para volver al mínimo más un 20%. Antes de modificar la planilla, mostrame qué vas a cambiar y esperá mi aprobación.",
-    loaded: ["La planilla \"Stock farmacia G{G}\" con 20 medicamentos ficticios", "Columnas: stock actual, stock mínimo y proveedor", "Tres proveedores: Droguería Andina, Farmacéutica Cuyo y Distribuidora Oeste"],
+    name: "Stock de farmacia", conn: "Gmail + Google Drive", connList: "Gmail y Google Drive",
+    prompt: "Abrí la planilla \"Stock farmacia G{G}\" en Drive, y solo esa. Marcá todos los medicamentos que están por debajo del stock mínimo. Leé también los mails con [G{G}] en el asunto: son pedidos urgentes de otras áreas, sumalos. Armá una planilla de pedido separada por proveedor, con la cantidad a pedir para volver al mínimo más un 20%, más lo urgente. Antes de modificar la planilla, mostrame qué vas a cambiar y esperá mi aprobación.",
+    loaded: ["La planilla \"Stock farmacia G{G}\" con 20 medicamentos ficticios, creada en el paso 6", "2 pedidos urgentes que les manda el grupo {F}, con [G{G}] en el asunto", "Tres proveedores: Droguería Andina, Farmacéutica Cuyo y Distribuidora Oeste"],
+    setupTitle: "Creen la planilla de stock",
+    setupText: "En Google Sheets, creen una planilla nueva llamada \"Stock farmacia G{G}\", hagan clic en la celda A1 y peguen esta tabla: se acomoda sola en columnas.",
+    tsv: true,
     planB: `Medicamento,Presentación,Stock actual,Stock mínimo,Proveedor
 Paracetamol 500 mg,comprimidos x 20,340,200,Droguería Andina
 Ibuprofeno 400 mg,comprimidos x 20,90,150,Droguería Andina
@@ -335,6 +396,35 @@ Clonazepam 0.5 mg,comprimidos x 30,30,40,Farmacéutica Cuyo
 Ranitidina 150 mg,comprimidos x 20,0,30,Distribuidora Oeste
 Alcohol en gel,frasco 500 ml,55,40,Droguería Andina
 Gasas estériles,paquete x 10,120,200,Distribuidora Oeste`,
+  },
+};
+
+const SEND = {
+  stock: {
+    title: "Mándenle pedidos de turno al grupo {T}",
+    why: "El grupo {T} hace turnos y su bandeja está vacía: ustedes son sus pacientes. Toquen «Abrir en Gmail» en cada mail y envíenlo.",
+    mails: [
+      { su: "[G{T}] Pedido de turno con clínica médica", body: "Hola, buenas tardes. Soy Laura Giménez. Necesito un turno con el Dr. Pereyra en clínica médica para un control anual. Puedo cualquier mañana de la semana que viene, preferentemente antes de las 11. Gracias." },
+      { su: "[G{T}] Turno urgente traumatología", body: "Buen día. Me llamo Ramiro Sosa. Me torcí el tobillo jugando al fútbol el fin de semana y todavía me duele al apoyar. Quisiera un turno con traumatología lo antes posible, puedo cualquier día después de las 16. Muchas gracias." },
+      { su: "[G{T}] Reprogramar turno", body: "Hola, soy Marta Funes. Tenía turno con la Dra. Quiroga el jueves a las 10 pero no voy a poder ir. ¿Me lo pueden pasar al viernes o al lunes, a cualquier hora? Disculpen las molestias." },
+    ],
+  },
+  turnos: {
+    title: "Mándenle quejas al grupo {T}",
+    why: "El grupo {T} convierte quejas en tickets: ustedes son los pacientes enojados. Toquen «Abrir en Gmail» en cada mail y envíenlo.",
+    mails: [
+      { su: "[G{T}] Espera eterna en guardia", body: "Ayer estuve 4 horas en la guardia con mi hijo con fiebre y nadie nos informó nada. Entiendo que haya demanda, pero por lo menos que avisen. Pésima experiencia. Carolina Díaz." },
+      { su: "[G{T}] No puedo descargar mis estudios", body: "Hace una semana me hice un análisis de sangre y en el portal de pacientes me sigue saliendo \"error al descargar\". Ya probé desde la compu y el celular. Necesito los resultados para mi médico. Jorge Ledesma." },
+      { su: "[G{T}] Cobro duplicado", body: "Me cobraron dos veces la consulta del 3 de noviembre en la tarjeta. Quiero que me devuelvan el cobro duplicado. Sofía Martínez." },
+    ],
+  },
+  quejas: {
+    title: "Mándenle pedidos urgentes al grupo {T}",
+    why: "El grupo {T} arma el pedido de farmacia: ustedes son guardia e internación pidiendo reposición. Toquen «Abrir en Gmail» en cada mail y envíenlo.",
+    mails: [
+      { su: "[G{T}] Urgente: reposición para guardia", body: "Hola farmacia. Para el fin de semana en guardia necesitamos 40 Ceftriaxona 1 g y 30 Ketorolac 30 mg. ¿Lo pueden sumar al próximo pedido? Gracias. Lic. Paula Rivas, jefa de enfermería de guardia." },
+      { su: "[G{T}] Insulina para internación", body: "Desde internación pedimos 15 frascos de Insulina NPH para la semana que viene: nos quedan muy pocos. Dr. Esteban Mora, internación clínica." },
+    ],
   },
 };
 
@@ -367,13 +457,63 @@ function renderGroup() {
   $("gConn").textContent = a.conn;
   $("gNotebook").textContent = g.notebook;
   $("gAccount").textContent = g.account;
-  const fill = (t) => t.split("{G}").join(String(group));
+  const fill = (t) => t.split("{G}").join(String(group)).split("{F}").join(String(g.from));
   $("gPrompt").textContent = fill(a.prompt);
   $("gPlanB").textContent = a.planB;
   const ul = $("gLoaded"); ul.replaceChildren();
   a.loaded.forEach(t => { const li = document.createElement("li"); li.textContent = fill(t); ul.appendChild(li); });
   $("pick").value = String(group);
+  renderPrep();
   loadSheet();
+}
+
+function gmailLink(to, su, body) {
+  return "https://mail.google.com/mail/?view=cm&fs=1" + (to ? "&to=" + encodeURIComponent(to) : "") + "&su=" + encodeURIComponent(su) + "&body=" + encodeURIComponent(body);
+}
+function renderPrep() {
+  const g = GROUPS[group], a = ACTS[g.act], snd = SEND[g.act];
+  const fill = (t) => t.split("{G}").join(String(group)).split("{T}").join(String(g.to)).split("{F}").join(String(g.from));
+  $("sugName").textContent = "iasinhumo.g" + group + ".apellido";
+  $("prepConn").textContent = a.connList;
+  $("prepNum").textContent = group;
+  $("prepFrom").textContent = g.from;
+  $("prepBackup").textContent = g.account;
+  $("sendTitle").textContent = fill(snd.title);
+  $("sendWhy").textContent = fill(snd.why);
+  $("sendToNum").textContent = g.to;
+  const toKey = "ias-to-" + group;
+  $("sendTo").value = store.get(toKey) || "";
+  const list = $("mailList");
+  const draw = () => {
+    const to = $("sendTo").value.trim();
+    list.replaceChildren();
+    snd.mails.forEach((m, i) => {
+      const su = fill(m.su);
+      const box = document.createElement("div"); box.className = "mail";
+      const b = document.createElement("b"); b.textContent = (i + 1) + ". " + su;
+      const pr = document.createElement("p"); pr.textContent = m.body;
+      const row = document.createElement("div"); row.className = "row";
+      const link = document.createElement("a"); link.className = "btn"; link.target = "_blank"; link.rel = "noopener";
+      link.href = gmailLink(to, su, m.body); link.textContent = "Abrir en Gmail";
+      const cp = document.createElement("button"); cp.type = "button"; cp.className = "btn ghost"; cp.textContent = "Copiar";
+      const ok = document.createElement("span"); ok.className = "ok"; ok.hidden = true;
+      cp.addEventListener("click", () => copyText("Asunto: " + su + "\n\n" + m.body, pr, ok));
+      row.append(link, cp, ok);
+      box.append(b, pr, row);
+      list.appendChild(box);
+    });
+  };
+  $("sendTo").oninput = () => { store.set(toKey, $("sendTo").value.trim()); draw(); };
+  draw();
+  $("setupTitle").textContent = a.setupTitle;
+  $("setupText").textContent = fill(a.setupText);
+  if (a.tsv) {
+    $("setupPromptBox").hidden = true; $("setupTsvBox").hidden = false;
+    $("setupTsv").textContent = a.planB.split("\n").map(l => l.split(",").join("\t")).join("\n");
+  } else {
+    $("setupPromptBox").hidden = false; $("setupTsvBox").hidden = true;
+    $("setupPrompt").textContent = fill(a.setupPrompt);
+  }
 }
 
 const pick = $("pick");
@@ -390,7 +530,7 @@ function showTab(name) {
   store.set("ias-tab", name);
 }
 tabs.forEach(t => t.addEventListener("click", () => showTab(t.dataset.tab)));
-showTab(["agente", "revisor", "hoja", "llevar"].includes(store.get("ias-tab")) ? store.get("ias-tab") : "agente");
+showTab(["preparar", "agente", "revisor", "hoja", "llevar"].includes(store.get("ias-tab")) ? store.get("ias-tab") : "preparar");
 
 // Copy
 function selectText(el) { const r = document.createRange(); r.selectNodeContents(el); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
