@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>IA sin humo · Tu grupo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: una sola columna para celular. Tarjeta de grupo arriba, pestañas pegajosas, contenido por pestaña. */
+:root {
+  --bg: #F6FAFA; --surface: #FFFFFF; --soft: #EAF2F2; --ink: #0B2B32; --fg: #14232A; --muted: #5C6F74;
+  --teal: #0F766E; --mint: #5EC4B6; --coral: #E85A3A; --on-accent: #FFFFFF; --line: #D3E2E2;
+  --code-bg: #0B2B32; --code-fg: #E8F3F2;
+  --display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --body: "Inter", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #08191D; --surface: #0F2A30; --soft: #133840; --ink: #E8F3F2; --fg: #DCEAEA; --muted: #93AAAD;
+  --teal: #3FB3A6; --mint: #5EC4B6; --coral: #FF7A5C; --on-accent: #06181B; --line: #1E4A52;
+  --code-bg: #04100F; --code-fg: #DDF0EE; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #08191D; --surface: #0F2A30; --soft: #133840; --ink: #E8F3F2; --fg: #DCEAEA; --muted: #93AAAD;
+  --teal: #3FB3A6; --mint: #5EC4B6; --coral: #FF7A5C; --on-accent: #06181B; --line: #1E4A52;
+  --code-bg: #04100F; --code-fg: #DDF0EE; color-scheme: dark }
+
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 640px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px 48px; display: grid; gap: 16px; }
+h1, h2, h3 { font-family: var(--display); color: var(--ink); text-wrap: balance; margin: 0; }
+h2 { font-size: 21px; }
+h3 { font-size: 16px; }
+p { margin: 0; }
+.eyebrow { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
+
+.brand { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.brand b { font-family: var(--display); font-size: 17px; color: var(--ink); }
+
+.group { background: var(--ink); color: var(--bg); border-radius: 18px; padding: 20px; display: grid; gap: 14px; }
+:root .group { background: #0B2B32; color: #EAF2F2; }
+.group .eyebrow { color: #5EC4B6; }
+.group-head { display: flex; align-items: center; gap: 16px; }
+.num { font-family: var(--display); font-size: 64px; font-weight: 700; line-height: 1; color: #FF7A5C; font-variant-numeric: tabular-nums; }
+.group h1 { font-size: 26px; color: #FFFFFF; }
+.group .conn { color: #5EC4B6; font-weight: 600; font-size: 14px; }
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.fact { background: rgba(255,255,255,.07); border-radius: 12px; padding: 10px 12px; min-width: 0; }
+.fact span { display: block; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #93AAAD; }
+.fact strong { display: block; font-size: 14px; color: #FFFFFF; overflow-wrap: anywhere; }
+
+nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 8px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.tab { font: 600 13px var(--body); padding: 10px 4px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
+.tab[aria-selected="true"] { background: var(--teal); border-color: var(--teal); color: var(--on-accent); }
+.tab:focus-visible, button:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--coral); outline-offset: 2px; }
+
+section.panel { display: grid; gap: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 10px; min-width: 0; }
+.card.soft { background: var(--soft); border-color: transparent; }
+.card.alert { border-color: var(--coral); }
+.card.alert h3 { color: var(--coral); }
+ol.steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; counter-reset: s; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: start; }
+ol.steps li::before { content: counter(s); font-family: var(--display); font-weight: 700; background: var(--teal); color: var(--on-accent); border-radius: 50%; width: 28px; height: 28px; display: grid; place-items: center; font-size: 14px; }
+ul.plain { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.timeline div { background: var(--soft); border-radius: 10px; padding: 8px; font-size: 12px; }
+.timeline b { display: block; font-family: var(--display); color: var(--coral); font-size: 14px; font-variant-numeric: tabular-nums; }
+.timeline .on { background: var(--teal); color: var(--on-accent); }
+.timeline .on b { color: var(--on-accent); }
+
+.code { background: var(--code-bg); color: var(--code-fg); border-radius: 12px; padding: 14px; overflow-x: auto; }
+.code pre { margin: 0; font: 13px/1.6 var(--mono); white-space: pre; }
+.prompt { background: var(--soft); border-radius: 10px; padding: 12px; font-size: 14px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button.btn { font: 600 14px var(--body); border-radius: 10px; padding: 10px 14px; border: 0; background: var(--teal); color: var(--on-accent); cursor: pointer; }
+button.btn.ghost { background: transparent; color: var(--teal); border: 1px solid var(--teal); }
+.ok { font-size: 13px; color: var(--teal); font-weight: 600; }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; }
+details summary { cursor: pointer; font-weight: 600; color: var(--ink); }
+details[open] summary { margin-bottom: 10px; }
+.trap { display: grid; grid-template-columns: 26px 1fr; gap: 8px; }
+.trap b { color: var(--coral); font-family: var(--display); }
+
+form.sheet { display: grid; gap: 12px; }
+.field { display: grid; gap: 4px; }
+.field label { font-weight: 600; color: var(--ink); font-size: 14px; }
+.field label i { font-style: normal; color: var(--coral); font-family: var(--display); margin-right: 6px; }
+.field small { color: var(--muted); font-size: 12px; }
+.field.key label { color: var(--teal); }
+textarea { font: 15px/1.4 var(--body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px; min-height: 64px; resize: vertical; width: 100%; box-sizing: border-box; }
+.saved { font-size: 12px; color: var(--muted); }
+
+.rules { display: grid; gap: 8px; }
+.rule { display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: center; }
+.rule span { width: 28px; height: 28px; border-radius: 50%; background: var(--coral); color: #FFFFFF; display: grid; place-items: center; font-family: var(--display); font-weight: 700; }
+a { color: var(--teal); font-weight: 600; }
+.foot { display: grid; gap: 8px; font-size: 13px; color: var(--muted); }
+select { font: 14px var(--body); padding: 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); }
+@media (max-width: 380px) { .timeline { grid-template-columns: 1fr 1fr; } .num { font-size: 52px; } }
+@media (prefers-reduced-motion: no-preference) { .group { animation: rise .5s ease-out both; } @keyframes rise { from { transform: translateY(8px); } to { transform: none; } } }
+</style>
+
+<div class="wrap">
+  <div class="brand"><b>IA sin humo</b><span class="eyebrow">Clínica de Cuyo · Parte 2</span></div>
+
+  <div class="group" id="groupCard" aria-live="polite">
+    <span class="eyebrow">Te tocó</span>
+    <div class="group-head">
+      <div class="num" id="gNum">1</div>
+      <div>
+        <h1 id="gName">Turnos</h1>
+        <div class="conn" id="gConn">Gmail + Google Calendar</div>
+      </div>
+    </div>
+    <div class="facts">
+      <div class="fact"><span>Tu notebook</span><strong id="gNotebook">Notebook 1</strong></div>
+      <div class="fact"><span>Cuenta compartida</span><strong id="gAccount">ia.sinh.mail1@gmail.com</strong></div>
+    </div>
+    <p style="font-size:13px;color:#93AAAD">La sesión ya está abierta en la notebook. Tres grupos comparten esta cuenta: trabajen solo con lo que lleva su número.</p>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="Secciones">
+    <button class="tab" role="tab" id="t-agente" data-tab="agente">Tu agente</button>
+    <button class="tab" role="tab" id="t-revisor" data-tab="revisor">Revisor</button>
+    <button class="tab" role="tab" id="t-hoja" data-tab="hoja">Hoja</button>
+    <button class="tab" role="tab" id="t-llevar" data-tab="llevar">Llevate</button>
+  </nav>
+
+  <!-- AGENTE -->
+  <section class="panel" id="p-agente" role="tabpanel" aria-labelledby="t-agente">
+    <div class="card">
+      <span class="eyebrow">Consigna para pegarle a Claude</span>
+      <div class="prompt" id="gPrompt"></div>
+      <div class="row"><button class="btn" type="button" data-copy="gPrompt">Copiar consigna</button><span class="ok" data-ok="gPrompt" hidden>Copiado</span></div>
+    </div>
+    <div class="card">
+      <h3>Qué ya está cargado</h3>
+      <ul class="plain" id="gLoaded"></ul>
+    </div>
+    <div class="card">
+      <h3>Pasos</h3>
+      <ol class="steps">
+        <li><span>Abran claude.ai en la notebook y revisen que el conector esté activo (ícono de herramientas, abajo del chat).</span></li>
+        <li><span>Peguen la consigna y dejen que el agente trabaje. Miren qué herramienta usa en cada paso.</span></li>
+        <li><span>Antes de que envíe, guarde o cree algo, lean qué va a hacer y aprueben o corrijan.</span></li>
+        <li><span>Mientras tanto, completen la Hoja en el celular.</span></li>
+      </ol>
+    </div>
+    <div class="card alert">
+      <h3>Regla de oro</h3>
+      <p>Nada se envía sin que el grupo lo apruebe. El agente propone, ustedes deciden.</p>
+    </div>
+    <div class="card soft">
+      <h3>Cómo corre</h3>
+      <div class="timeline">
+        <div><b>0–3</b>Grupos</div>
+        <div><b>3–15</b>El agente trabaja</div>
+        <div class="on"><b>15–22</b>Comparar con el otro grupo</div>
+        <div><b>22–25</b>Votación</div>
+      </div>
+      <p style="font-size:13px;color:var(--muted)">A los 12 minutos llega la auditoría: ¿qué pasa si el agente agenda en un horario ocupado o inventa un dato?</p>
+    </div>
+    <details>
+      <summary>Plan B: si el conector no anda</summary>
+      <p style="font-size:14px;margin-bottom:10px">Copien estos datos y péguenselos a cualquier IA gratuita junto con la consigna. No es lo mismo que un agente, pero pueden seguir.</p>
+      <div class="code"><pre id="gPlanB"></pre></div>
+      <div class="row" style="margin-top:10px"><button class="btn ghost" type="button" data-copy="gPlanB">Copiar datos</button><span class="ok" data-ok="gPlanB" hidden>Copiado</span></div>
+    </details>
+  </section>
+
+  <!-- REVISOR -->
+  <section class="panel" id="p-revisor" role="tabpanel" aria-labelledby="t-revisor" hidden>
+    <div class="card">
+      <span class="eyebrow">Verdad 3 · 5 minutos en parejas</span>
+      <h2>El revisor de 3 minutos</h2>
+      <p>Una IA generó esta función para buscar pacientes. Tiene problemas escondidos.</p>
+    </div>
+    <div class="code"><pre id="code">API_KEY = "sk-live-9f3a7c..."  # clave del HIS
+
+def buscar_paciente(dni):
+    sql = f"SELECT * FROM pacientes
+           WHERE dni = '{dni}'"
+    paciente = db.execute(sql).fetchone()
+    log.info(f"Consulta: {paciente}")
+    return paciente</pre></div>
+    <div class="row"><button class="btn" type="button" data-copy="code">Copiar código</button><span class="ok" data-ok="code" hidden>Copiado</span></div>
+    <div class="card">
+      <ol class="steps">
+        <li><span><b>3 minutos a ojo.</b> Encuentren todos los problemas que puedan, sin IA.</span></li>
+        <li><span><b>Pregúntenle a la IA.</b> Peguen el código con esta pregunta:</span></li>
+      </ol>
+      <div class="prompt" id="revPrompt">¿Este código es seguro para el sistema de una clínica en Argentina? Listá cada problema y cómo lo corregirías.</div>
+      <div class="row"><button class="btn ghost" type="button" data-copy="revPrompt">Copiar pregunta</button><span class="ok" data-ok="revPrompt" hidden>Copiado</span></div>
+      <ol class="steps" start="3" style="counter-reset:s 2">
+        <li><span><b>Comparen.</b> ¿Quién encontró más, ustedes o la IA? ¿Alguien vio todas?</span></li>
+      </ol>
+    </div>
+    <details id="traps">
+      <summary>Ver las respuestas (cuando lo diga Matías)</summary>
+      <div style="display:grid;gap:10px">
+        <div class="trap"><b>1</b><span><b>Clave escrita en el código.</b> Termina en el repositorio y la ve cualquiera con acceso.</span></div>
+        <div class="trap"><b>2</b><span><b>Inyección SQL.</b> El DNI entra directo a la consulta: hay que usar parámetros.</span></div>
+        <div class="trap"><b>3</b><span><b>El log guarda la ficha completa.</b> Datos de salud son sensibles según la Ley 25.326 y no van a un log.</span></div>
+        <div class="trap"><b>4</b><span><b>SELECT * de más.</b> Trae todos los campos cuando solo hacían falta algunos.</span></div>
+      </div>
+    </details>
+  </section>
+
+  <!-- HOJA -->
+  <section class="panel" id="p-hoja" role="tabpanel" aria-labelledby="t-hoja" hidden>
+    <div class="card soft">
+      <h2>La hoja del grupo</h2>
+      <p>Complétenla mientras el agente trabaja. Es lo que defienden en 90 segundos. Se guarda sola en este celular.</p>
+    </div>
+    <form class="sheet" id="sheet" autocomplete="off">
+      <div class="field"><label for="f1"><i>1</i>Problema</label><small>Qué tarea le ahorra horas a alguien</small><textarea id="f1"></textarea></div>
+      <div class="field"><label for="f2"><i>2</i>Entrada</label><small>Qué datos leyó el agente y de dónde</small><textarea id="f2"></textarea></div>
+      <div class="field"><label for="f3"><i>3</i>Herramientas</label><small>Qué conectores usó y qué hizo con cada uno</small><textarea id="f3"></textarea></div>
+      <div class="field key"><label for="f4"><i>4</i>Humano al medio</label><small>Dónde aprobaron ustedes, y por qué</small><textarea id="f4"></textarea></div>
+      <div class="field"><label for="f5"><i>5</i>Modelo</label><small>En la clínica real: ¿nube o local? Ley 25.326</small><textarea id="f5"></textarea></div>
+      <div class="field"><label for="f6"><i>6</i>Costo mensual</label><small>Con la tabla de la plata, a escala real</small><textarea id="f6"></textarea></div>
+      <div class="field"><label for="f7"><i>7</i>Métrica</label><small>Cómo medirían si sirve: antes y después</small><textarea id="f7"></textarea></div>
+    </form>
+    <div class="row"><button class="btn" type="button" id="copySheet">Copiar la hoja completa</button><button class="btn ghost" type="button" id="clearSheet">Borrar</button><span class="ok" id="sheetOk" hidden>Copiado</span></div>
+    <p class="saved" id="savedNote">Se guarda en este celular a medida que escriben.</p>
+    <div class="card" id="clearConfirm" hidden>
+      <p>¿Borrar todo lo que escribieron en la hoja?</p>
+      <div class="row"><button class="btn" type="button" id="clearYes">Sí, borrar</button><button class="btn ghost" type="button" id="clearNo">Cancelar</button></div>
+    </div>
+  </section>
+
+  <!-- LLEVATE -->
+  <section class="panel" id="p-llevar" role="tabpanel" aria-labelledby="t-llevar" hidden>
+    <div class="card">
+      <h2>3 reglas para llevarse</h2>
+      <div class="rules">
+        <div class="rule"><span>1</span><p>Medí, no sientas: el beneficio se demuestra con números.</p></div>
+        <div class="rule"><span>2</span><p>Verificá todo lo que ejecutás: paquetes, código y datos.</p></div>
+        <div class="rule"><span>3</span><p>El dato del paciente decide el modelo, no al revés.</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Para seguir, gratis</h3>
+      <ul class="plain">
+        <li><a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>: el plan gratuito tiene los conectores que usamos hoy.</li>
+        <li><a href="https://notebooklm.google.com" target="_blank" rel="noopener">NotebookLM</a>: estudiar con tus propios apuntes.</li>
+        <li><a href="https://ollama.com" target="_blank" rel="noopener">Ollama</a>: modelos abiertos en tu propia compu, sin mandar datos afuera.</li>
+        <li>Proyecto propio: armá uno de los agentes de hoy y publicalo en GitHub o LinkedIn.</li>
+      </ul>
+    </div>
+    <div class="card soft">
+      <h3>La plata, en una línea</h3>
+      <p>Resumir 11.000 historias clínicas por mes cuesta de USD 4 a USD 215 según el modelo. Lo caro es elegir mal.</p>
+    </div>
+  </section>
+
+  <div class="foot">
+    <div class="row"><label for="pick">¿Te pidieron cambiar de grupo?</label>
+      <select id="pick"></select></div>
+    <p>IA sin humo · Jornada de inteligencia artificial · Clínica de Cuyo. Todos los datos de pacientes de esta actividad son ficticios.</p>
+  </div>
+</div>
+
+<script>
+const GROUPS = {
+  1: { act: "turnos", notebook: "Notebook 1", account: "ia.sinh.mail1@gmail.com" },
+  2: { act: "turnos", notebook: "Notebook 2", account: "ia.sinh.mail2@gmail.com" },
+  3: { act: "quejas", notebook: "Notebook 3", account: "ia.sinh.mail1@gmail.com" },
+  4: { act: "quejas", notebook: "Notebook 4", account: "ia.sinh.mail2@gmail.com" },
+  5: { act: "stock",  notebook: "Notebook 5", account: "ia.sinh.mail1@gmail.com" },
+  6: { act: "stock",  notebook: "Notebook 6", account: "ia.sinh.mail2@gmail.com" },
+};
+const ACTS = {
+  turnos: {
+    name: "Turnos", conn: "Gmail + Google Calendar",
+    prompt: "Leé solo los mails de pacientes que piden turno y tienen [G{G}] en el asunto. Para cada uno, buscá un hueco libre en el calendario \"Agenda G{G}\", con el médico que corresponde, creá el evento y prepará la invitación para el paciente. No toques otros calendarios ni otros mails. Antes de crear o enviar algo, mostrame qué vas a hacer y esperá mi aprobación.",
+    loaded: ["3 mails con [G{G}] en el asunto, de pacientes pidiendo turno", "El calendario \"Agenda G{G}\" con la semana próxima de 3 médicos", "Todo es ficticio: no hay pacientes reales"],
+    planB: `MAIL 1 · Pedido de turno con clínica médica
+Laura Giménez. Turno con el Dr. Pereyra, control anual. Cualquier mañana de la semana que viene, antes de las 11.
+
+MAIL 2 · Turno urgente traumatología
+Ramiro Sosa. Esguince de tobillo, le duele al apoyar. Lo antes posible, cualquier día después de las 16.
+
+MAIL 3 · Reprogramar turno
+Marta Funes. Tenía turno con la Dra. Quiroga el jueves a las 10. Pide pasarlo al viernes o al lunes, a cualquier hora.
+
+AGENDA (semana próxima)
+Dr. Pereyra, clínica médica: ocupado lun a vie 8-9 y 10-12; libre lun a vie 9-10
+Dra. Quiroga, clínica médica: ocupada jue 10-11 (Marta Funes) y vie todo el día; libre lun 14-18
+Dr. Ortiz, traumatología: ocupado lun a mié 16-18; libre jue y vie 16-18`,
+  },
+  quejas: {
+    name: "Quejas a tickets", conn: "Gmail + Notion (o Google Docs)",
+    prompt: "Leé las 3 quejas de pacientes en la bandeja de entrada, sin archivar ni borrar ningún mail. Por cada una, creá un ticket en la base de Notion \"Tickets G{G}\" (o en el Google Doc \"Tickets G{G}\") con título, paciente, área, prioridad, estado, un resumen y una respuesta sugerida. Antes de crear los tickets, mostrame cómo los clasificaste y esperá mi aprobación.",
+    loaded: ["3 mails de quejas de pacientes en la bandeja de entrada, compartidos con el otro grupo", "La base \"Tickets G{G}\" vacía en Notion y un Google Doc \"Tickets G{G}\" como alternativa", "Áreas posibles: Guardia, Sistemas, Facturación, Atención al paciente"],
+    planB: `QUEJA 1 · Espera eterna en guardia
+Carolina Díaz. Estuvo 4 horas en la guardia con su hijo con fiebre y nadie le informó nada.
+
+QUEJA 2 · No puedo descargar mis estudios
+Jorge Ledesma. Hace una semana se hizo un análisis y el portal dice "error al descargar", desde la compu y el celular.
+
+QUEJA 3 · Cobro duplicado
+Sofía Martínez. Le cobraron dos veces la consulta del 3 de noviembre en la tarjeta. Pide la devolución.
+
+COLUMNAS DEL TICKET
+Título · Paciente · Área (Guardia, Sistemas, Facturación, Atención al paciente) · Prioridad (Alta, Media, Baja) · Estado (Nuevo, En curso, Resuelto) · Resumen · Respuesta sugerida`,
+  },
+  stock: {
+    name: "Stock de farmacia", conn: "Google Drive + Sheets",
+    prompt: "Abrí la planilla \"Stock farmacia G{G}\" en Drive, y solo esa. Marcá todos los medicamentos que están por debajo del stock mínimo y armá una planilla de pedido separada por proveedor, con la cantidad a pedir para volver al mínimo más un 20%. Antes de modificar la planilla, mostrame qué vas a cambiar y esperá mi aprobación.",
+    loaded: ["La planilla \"Stock farmacia G{G}\" con 20 medicamentos ficticios", "Columnas: stock actual, stock mínimo y proveedor", "Tres proveedores: Droguería Andina, Farmacéutica Cuyo y Distribuidora Oeste"],
+    planB: `Medicamento,Presentación,Stock actual,Stock mínimo,Proveedor
+Paracetamol 500 mg,comprimidos x 20,340,200,Droguería Andina
+Ibuprofeno 400 mg,comprimidos x 20,90,150,Droguería Andina
+Amoxicilina 500 mg,cápsulas x 16,45,80,Farmacéutica Cuyo
+Omeprazol 20 mg,cápsulas x 28,210,100,Farmacéutica Cuyo
+Enalapril 10 mg,comprimidos x 30,60,120,Droguería Andina
+Metformina 850 mg,comprimidos x 30,130,100,Distribuidora Oeste
+Losartán 50 mg,comprimidos x 30,40,100,Distribuidora Oeste
+Atorvastatina 20 mg,comprimidos x 30,150,80,Farmacéutica Cuyo
+Salbutamol aerosol,100 mcg x 200 dosis,12,30,Droguería Andina
+Diclofenac 75 mg,ampollas x 3,25,60,Distribuidora Oeste
+Ceftriaxona 1 g,frasco ampolla,18,40,Farmacéutica Cuyo
+Suero fisiológico,bolsa 500 ml,400,300,Distribuidora Oeste
+Dexametasona 8 mg,ampollas,70,50,Droguería Andina
+Ketorolac 30 mg,ampollas,15,50,Farmacéutica Cuyo
+Insulina NPH,frasco 10 ml,8,20,Distribuidora Oeste
+Levotiroxina 50 mcg,comprimidos x 50,95,60,Droguería Andina
+Clonazepam 0.5 mg,comprimidos x 30,30,40,Farmacéutica Cuyo
+Ranitidina 150 mg,comprimidos x 20,0,30,Distribuidora Oeste
+Alcohol en gel,frasco 500 ml,55,40,Droguería Andina
+Gasas estériles,paquete x 10,120,200,Distribuidora Oeste`,
+  },
+};
+
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+};
+const $ = (id) => document.getElementById(id);
+
+function pickRandomGroup() {
+  try { return 1 + (crypto.getRandomValues(new Uint32Array(1))[0] % 6); } catch (e) { return 1 + Math.floor(Math.random() * 6); }
+}
+function groupFromHash() {
+  const m = /^#grupo-([1-6])$/.exec(location.hash || "");
+  return m ? Number(m[1]) : null;
+}
+if (location.hash === "#reset") {
+  try { Object.keys(localStorage).filter(k => k.startsWith("ias-")).forEach(k => localStorage.removeItem(k)); } catch (e) {}
+  location.hash = "";
+}
+let group = groupFromHash() || Number(store.get("ias-grupo")) || pickRandomGroup();
+if (!GROUPS[group]) group = pickRandomGroup();
+store.set("ias-grupo", String(group));
+
+function renderGroup() {
+  const g = GROUPS[group], a = ACTS[g.act];
+  $("gNum").textContent = group;
+  $("gName").textContent = a.name;
+  $("gConn").textContent = a.conn;
+  $("gNotebook").textContent = g.notebook;
+  $("gAccount").textContent = g.account;
+  const fill = (t) => t.split("{G}").join(String(group));
+  $("gPrompt").textContent = fill(a.prompt);
+  $("gPlanB").textContent = a.planB;
+  const ul = $("gLoaded"); ul.replaceChildren();
+  a.loaded.forEach(t => { const li = document.createElement("li"); li.textContent = fill(t); ul.appendChild(li); });
+  $("pick").value = String(group);
+  loadSheet();
+}
+
+const pick = $("pick");
+Object.keys(GROUPS).forEach(n => {
+  const o = document.createElement("option"); o.value = n; o.textContent = "Grupo " + n + " · " + ACTS[GROUPS[n].act].name; pick.appendChild(o);
+});
+pick.addEventListener("change", () => { group = Number(pick.value); store.set("ias-grupo", String(group)); renderGroup(); window.scrollTo({ top: 0 }); });
+window.addEventListener("hashchange", () => { const h = groupFromHash(); if (h) { group = h; store.set("ias-grupo", String(group)); renderGroup(); } });
+
+// Tabs
+const tabs = [...document.querySelectorAll(".tab")];
+function showTab(name) {
+  tabs.forEach(t => { const on = t.dataset.tab === name; t.setAttribute("aria-selected", on ? "true" : "false"); $("p-" + t.dataset.tab).hidden = !on; });
+  store.set("ias-tab", name);
+}
+tabs.forEach(t => t.addEventListener("click", () => showTab(t.dataset.tab)));
+showTab(["agente", "revisor", "hoja", "llevar"].includes(store.get("ias-tab")) ? store.get("ias-tab") : "agente");
+
+// Copy
+function selectText(el) { const r = document.createRange(); r.selectNodeContents(el); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
+function copyText(text, el, okEl) {
+  const done = () => { if (okEl) { okEl.textContent = "Copiado"; okEl.hidden = false; setTimeout(() => { okEl.hidden = true; }, 2000); } };
+  const fail = () => { if (el) selectText(el); if (okEl) { okEl.textContent = "Seleccionado: copialo a mano"; okEl.hidden = false; } };
+  try { navigator.clipboard.writeText(text).then(done, fail); } catch (e) { fail(); }
+}
+document.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", () => {
+  const id = b.dataset.copy, el = $(id); copyText(el.textContent, el, document.querySelector('[data-ok="' + id + '"]'));
+}));
+
+// Hoja
+const fields = ["f1", "f2", "f3", "f4", "f5", "f6", "f7"];
+const labels = ["Problema", "Entrada", "Herramientas", "Humano al medio", "Modelo", "Costo mensual", "Métrica"];
+const sheetKey = () => "ias-hoja-" + group;
+function loadSheet() {
+  let data = {}; try { data = JSON.parse(store.get(sheetKey()) || "{}"); } catch (e) {}
+  fields.forEach(f => { $(f).value = data[f] || ""; });
+}
+function saveSheet() {
+  const data = {}; fields.forEach(f => { data[f] = $(f).value; });
+  store.set(sheetKey(), JSON.stringify(data));
+}
+let t; $("sheet").addEventListener("input", () => { clearTimeout(t); t = setTimeout(saveSheet, 300); });
+$("sheet").addEventListener("submit", e => e.preventDefault());
+$("copySheet").addEventListener("click", () => {
+  const a = ACTS[GROUPS[group].act];
+  const text = "Grupo " + group + " · " + a.name + "\n\n" + fields.map((f, i) => (i + 1) + ". " + labels[i] + ": " + ($(f).value.trim() || "—")).join("\n");
+  copyText(text, $("sheet"), $("sheetOk"));
+});
+$("clearSheet").addEventListener("click", () => { $("clearConfirm").hidden = false; });
+$("clearNo").addEventListener("click", () => { $("clearConfirm").hidden = true; });
+$("clearYes").addEventListener("click", () => { fields.forEach(f => { $(f).value = ""; }); store.del(sheetKey()); $("clearConfirm").hidden = true; });
+
+renderGroup();
+</script>
+
+</body>
+</html>
