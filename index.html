@@ -119,7 +119,7 @@ select { font: 14px var(--body); padding: 8px; border-radius: 8px; border: 1px s
   <div class="group" id="groupCard" aria-live="polite">
     <span class="eyebrow">Te tocó</span>
     <div class="group-head">
-      <div class="num" id="gNum">1</div>
+      <div class="num" id="gNum">·</div>
       <div>
         <h1 id="gName">Turnos</h1>
         <div class="conn" id="gConn">Gmail + Google Calendar</div>
@@ -446,9 +446,19 @@ if (location.hash === "#reset") {
   try { Object.keys(localStorage).filter(k => k.startsWith("ias2-")).forEach(k => localStorage.removeItem(k)); } catch (e) {}
   location.hash = "";
 }
-let group = groupFromHash() || Number(store.get("ias2-grupo")) || pickRandomGroup();
-if (!GROUPS[group]) group = pickRandomGroup();
-store.set("ias2-grupo", String(group));
+const COUNTER = "https://abacus.jasoncameron.dev/hit/ia-sin-humo-clinica-cuyo/grupos-v1";
+async function counterGroup() {
+  try {
+    const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 5000);
+    const r = await fetch(COUNTER, { signal: ctl.signal, cache: "no-store" });
+    clearTimeout(t);
+    const j = await r.json();
+    const n = Number(j && j.value);
+    if (n > 0) return ((n - 1) % 6) + 1;
+  } catch (e) {}
+  return pickRandomGroup();
+}
+let group = groupFromHash() || Number(store.get("ias2-grupo")) || 0;
 
 function renderGroup() {
   const g = GROUPS[group], a = ACTS[g.act];
@@ -566,7 +576,11 @@ $("clearSheet").addEventListener("click", () => { $("clearConfirm").hidden = fal
 $("clearNo").addEventListener("click", () => { $("clearConfirm").hidden = true; });
 $("clearYes").addEventListener("click", () => { fields.forEach(f => { $(f).value = ""; }); store.del(sheetKey()); $("clearConfirm").hidden = true; });
 
-renderGroup();
+(async () => {
+  if (!GROUPS[group]) { $("gName").textContent = "Asignando grupo…"; $("gConn").textContent = ""; group = await counterGroup(); }
+  store.set("ias2-grupo", String(group));
+  renderGroup();
+})();
 </script>
 
 </body>
